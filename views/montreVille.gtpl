@@ -42,13 +42,31 @@
             <canvas id="d" style=" position:absolute; top:27%; left:30%; z-index:1; pointer-events:none;" width="704"
                 height="704"></canvas>
         </div>
-        <div style="padding-left: 724px;">
+        <div style="padding-left: 750px;">
             <ul style="list-style-type: none;">
-                <li class="build-select"> <img id="rochers" data-atlas-index="13" src="/assets/tiles/rochers_duo.png">
-                    <h3>Rochers</h3>
+                <li class="build-select">
+                    <div class="card">
+                        <img id="rochers" width="100%" data-atlas-index="13" src="/assets/tiles/13_rochers_duo.png">
+                        <div class="container">
+                            <h3>Rochers</h3>
+                        </div>
+                    </div>
                 </li>
-                <li class="build-select"> <img id="arbres" data-atlas-index="1" src="/assets/tiles/arbres_duo.png">
-                    <h3>Arbres </h3>
+                <li class="build-select">
+                    <div class="card">
+                        <img id="arbres" width="100%" data-atlas-index="1" src="/assets/tiles/01_arbres_duo.png">
+                        <div class="container">
+                            <h3>Arbres </h3>
+                        </div>
+                    </div>
+                </li>
+                <li class="build-select">
+                    <div class="card">
+                        <img id="clear" width="100%" data-atlas-index="-1" src="/assets/tiles/croix.png">
+                        <div class="container">
+                            <h3>Supprimer</h3>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>

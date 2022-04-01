@@ -5,24 +5,21 @@ import (
 )
 
 type Ressource struct {
-	Type      string `json:"type"`
-	Visual    string `json:"visual"`
-	Buildable bool   `json:"buildable"`
-	CoordX    string `json:"coordX"`
-	CoordY    string `json:"coordY"`
+	Type       string `json:"type"`
+	IndexBoard string `json:"indexBoard"`
 }
 
-func GetRessources(map_reference int) ([]Ressource, error) {
+func GetRessources(city_reference int) ([]Ressource, error) {
 	var RessourcesList []Ressource
 	db, err := sql.Open("sqlite3", "./MyCity.db")
 	checkErr(err)
 	// query
-	rows, err := db.Query("SELECT coordX,coordY, ressourceType, isBuildable,visual FROM ressourceNodes WHERE ref_city_id = $map_reference ORDER BY coordX, coordY", map_reference)
+	rows, err := db.Query("SELECT indexBoard, ressourceType FROM ressourceNodes WHERE ref_city_id = $city_reference ORDER BY coordX, coordY", city_reference)
 	checkErr(err)
 	defer rows.Close()
 	for rows.Next() {
 		var ressource Ressource
-		err = rows.Scan(&ressource.CoordX, &ressource.CoordY, &ressource.Type, &ressource.Buildable, &ressource.Visual)
+		err = rows.Scan(&ressource.IndexBoard, &ressource.Type)
 		if err != nil {
 			// handle this error
 			panic(err)

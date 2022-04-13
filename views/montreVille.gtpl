@@ -75,6 +75,14 @@
                         </div>
                     </div>
                 </li>
+                <li class="build-save">
+                    <div class="card">
+                        <img id="save" width="100%" data-city-id="{{.Id}}" src="/assets/tiles/coche.png">
+                        <div class="container">
+                            <h3>Sauvegarder</h3>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>

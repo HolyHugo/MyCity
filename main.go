@@ -1,9 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"html/template"
 	"myCity/elements"
 	"net/http"
+	"strconv"
+	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -11,6 +14,7 @@ import (
 func main() {
 	http.HandleFunc("/annuaire", recherchePage)
 	http.HandleFunc("/recherche/ville", montreVille)
+	http.HandleFunc("/savemap/", saveMap)
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("views/assets"))))
 	err := http.ListenAndServe(":9090", nil)
 	checkErr(err)
@@ -32,8 +36,19 @@ func montreVille(w http.ResponseWriter, r *http.Request) {
 	checkErr(err)
 }
 
+func saveMap(w http.ResponseWriter, r *http.Request) {
+	strId := strings.TrimPrefix(r.URL.Path, "/savemap/")
+	r.ParseForm()
+	jsonData := r.PostFormValue("data")
+	mappedJson := map[string]string{}
+	json.Unmarshal([]byte(jsonData), &mappedJson)
+	id, err := strconv.Atoi(strId)
+	checkErr(err)
+	elements.SaveCity(id, mappedJson)
+}
+
 func checkErr(err error) {
-	if err != nil  {
+	if err != nil {
 		panic(err)
 	}
 }

@@ -5,6 +5,7 @@ import (
 )
 
 type City struct {
+	Id          int    `json:"id"`
 	Name        string `json:"name"`
 	Owner       string `json:"owner"`
 	Progression int    `json:"progression"`
@@ -13,15 +14,14 @@ type City struct {
 
 func GetCity(name string, owner string) (*City, error) {
 	var city City
-	var map_reference int
 	db, err := sql.Open("sqlite3", "./MyCity.db")
 	checkErr(err)
 	// query
-	err = db.QueryRow("SELECT name,owner, id, progression FROM cities WHERE name = $name AND owner = $owner ", name, owner).Scan(&city.Name, &city.Owner, &map_reference, &city.Progression)
+	err = db.QueryRow("SELECT name,owner, id, progression FROM cities WHERE name = $name AND owner = $owner ", name, owner).Scan(&city.Name, &city.Owner, &city.Id, &city.Progression)
 	if err == sql.ErrNoRows {
 		return &City{}, nil
 	} else {
-		RessourcesList, err := GetRessources(map_reference)
+		RessourcesList, err := GetRessources(city.Id)
 		if err == nil && RessourcesList != nil {
 			city.Ressources = RessourcesList
 		}

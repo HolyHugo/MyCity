@@ -14,7 +14,7 @@ func GetRessources(city_reference int) ([]Ressource, error) {
 	db, err := sql.Open("sqlite3", "./MyCity.db")
 	checkErr(err)
 	// query
-	rows, err := db.Query("SELECT indexBoard, ressourceType FROM ressourceNodes WHERE ref_city_id = $city_reference ORDER BY coordX, coordY", city_reference)
+	rows, err := db.Query("SELECT indexBoard, ressourceType FROM ressourceNodes WHERE ref_city_id = $city_reference ORDER BY indexBoard", city_reference)
 	checkErr(err)
 	defer rows.Close()
 	for rows.Next() {
@@ -25,7 +25,6 @@ func GetRessources(city_reference int) ([]Ressource, error) {
 			panic(err)
 		}
 		RessourcesList = append(RessourcesList, ressource)
-
 	}
 	// get any error encountered during iteration
 	err = rows.Err()

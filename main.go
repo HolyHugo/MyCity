@@ -33,7 +33,7 @@ func montreVille(w http.ResponseWriter, r *http.Request) {
 }
 
 func checkErr(err error) {
-	if err != nil {
+	if err != nil  {
 		panic(err)
 	}
 }

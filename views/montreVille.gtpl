@@ -4,7 +4,12 @@
     <link rel="stylesheet" href="/assets/ville.css" type="text/css">
     </link>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Slab">
-
+    <script>
+        var existingBuilding = [];
+        {{ range .Ressources}}
+        existingBuilding[parseInt('{{.IndexBoard}}')] = parseInt('{{.Type}}')
+        {{end}}
+    </script>
     <title>{{ .Name }}</title>
 </head>
 
@@ -16,8 +21,9 @@
     </div>
     {{else}}
     <div class="infos-ville">
-        <h1>Aucun résultat pour cette combinaison <span id="points-techno">Maire</span> / <span
-                id="nom-ville">Ville</span></h1>
+        <h1>Aucun résultat pour cette combinaison
+            <span id="points-techno">Maire</span> 
+            / <span id="nom-ville">Ville</span></h1>
         <h2><a href="/annuaire">Retour à la recherche</a></h2>
     </div>
     {{end}}
@@ -36,6 +42,7 @@
     <br>
     <br>
     <br>
+    {{if .Name }}
     <div class="ui-wrapper">
         <div class="canvas-screen">
             <canvas id="c" style="  position:absolute; top:27%; left:30%; z-index:0" width="704" height="704"></canvas>
@@ -70,9 +77,8 @@
                 </li>
             </ul>
         </div>
-
     </div>
+    {{end}}
 </body>
 <script type="text/javascript" src="/assets/ville.js"></script>
-
 </html>

@@ -35,6 +35,14 @@ window.onload = function () {
         71, 72, 73,
         82, 83, 84
     ]
+
+    existingBuilding.forEach(function (value, index) {
+        map.tiles[index] = value
+        if (buildableSquare.includes(index)) {
+            buildableSquare = buildableSquare.filter(e => e !== index)
+        }
+    })
+    console.table(buildableSquare);
     var canvas = document.getElementById('c');
     var context = document.getElementById('c').getContext('2d');
     var canvasBuilding = document.getElementById('d');
@@ -84,7 +92,6 @@ window.onload = function () {
                     }
                 }
             } else {
-
                 contextBuilding.clearRect(coordX*64, coordY*64, 64, 64);
             }
         }

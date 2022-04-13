@@ -18,8 +18,8 @@ func GetCity(name string, owner string) (*City, error) {
 	checkErr(err)
 	// query
 	err = db.QueryRow("SELECT name,owner, id, progression FROM cities WHERE name = $name AND owner = $owner ", name, owner).Scan(&city.Name, &city.Owner, &map_reference, &city.Progression)
-	if err != nil && err == sql.ErrNoRows {
-		return &City{}, err
+	if err == sql.ErrNoRows {
+		return &City{}, nil
 	} else {
 		RessourcesList, err := GetRessources(map_reference)
 		if err == nil && RessourcesList != nil {

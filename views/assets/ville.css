@@ -114,6 +114,9 @@ body {
 .build-select:hover{
   color: rgb(175, 175, 175)
 }
+.build-save:hover{
+  color: rgb(108, 216, 20)
+}
 
 .card {
   /* Add shadows to create the "card" effect */

@@ -5,33 +5,41 @@ import (
 )
 
 type Ressource struct {
-	Type      string `json:"type"`
-	Visual    string `json:"visual"`
-	Buildable bool   `json:"buildable"`
-	CoordX    string `json:"coordX"`
-	CoordY    string `json:"coordY"`
+	Type       string `json:"type"`
+	IndexBoard string `json:"indexBoard"`
 }
 
-func GetRessources(map_reference int) ([]Ressource, error) {
+func GetRessources(city_reference int) ([]Ressource, error) {
 	var RessourcesList []Ressource
 	db, err := sql.Open("sqlite3", "./MyCity.db")
 	checkErr(err)
 	// query
-	rows, err := db.Query("SELECT coordX,coordY, ressourceType, isBuildable,visual FROM ressourceNodes WHERE ref_city_id = $map_reference ORDER BY coordX, coordY", map_reference)
+	rows, err := db.Query("SELECT indexBoard, ressourceType FROM ressourceNodes WHERE ref_city_id = $city_reference ORDER BY indexBoard", city_reference)
 	checkErr(err)
 	defer rows.Close()
 	for rows.Next() {
 		var ressource Ressource
-		err = rows.Scan(&ressource.CoordX, &ressource.CoordY, &ressource.Type, &ressource.Buildable, &ressource.Visual)
+		err = rows.Scan(&ressource.IndexBoard, &ressource.Type)
 		if err != nil {
 			// handle this error
 			panic(err)
 		}
 		RessourcesList = append(RessourcesList, ressource)
-
 	}
 	// get any error encountered during iteration
 	err = rows.Err()
 	checkErr(err)
 	return RessourcesList, nil
+}
+
+func SaveCity(cityId int,nodes map[string]string)(err error){
+	db, err := sql.Open("sqlite3", "./MyCity.db")
+	checkErr(err)
+
+	for i, t := range nodes {
+	// query
+	_ ,err := db.Exec("INSERT INTO ressourceNodes (indexBoard, ressourceType, ref_city_id) VALUES ($index,$type,$cityId)", i,t,cityId)
+	checkErr(err)
+	}
+	return err
 }

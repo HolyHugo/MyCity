@@ -1,24 +1,30 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"html/template"
+	"myCity/database"
 	"myCity/elements"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 )
 
 func main() {
 	port := os.Getenv("PORT")
+	dbUrl := os.Getenv("DATABASE_URL")
+	var err error
+	database.DBCon, err = sql.Open("postgres", dbUrl)
+	checkErr(err)
 	http.HandleFunc("/annuaire", recherchePage)
 	http.HandleFunc("/recherche/ville", montreVille)
 	http.HandleFunc("/savemap/", saveMap)
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("views/assets"))))
-	err := http.ListenAndServe(":"+port, nil)
+	err = http.ListenAndServe(":"+port, nil)
 	checkErr(err)
 }
 

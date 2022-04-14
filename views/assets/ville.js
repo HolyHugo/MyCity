@@ -76,7 +76,7 @@ window.onload = function () {
         };
         var data = JSON.stringify(builtSquare);
         xhr.send('data='+data);
-        
+        location.reload();
     }
 
     function handleMouseDown(e) {

@@ -1,7 +1,7 @@
 package elements
 
 import (
-	"database/sql"
+	"myCity/database"
 )
 
 type Ressource struct {
@@ -11,10 +11,8 @@ type Ressource struct {
 
 func GetRessources(city_reference int) ([]Ressource, error) {
 	var RessourcesList []Ressource
-	db, err := sql.Open("sqlite3", "./MyCity.db")
-	checkErr(err)
 	// query
-	rows, err := db.Query("SELECT indexBoard, ressourceType FROM ressourceNodes WHERE ref_city_id = $city_reference ORDER BY indexBoard", city_reference)
+	rows, err := database.DBCon.Query("SELECT \"indexBoard\", \"ressourceType\" FROM \"ressourceNodes\" WHERE \"ref_city_id\" = $1 ORDER BY \"indexBoard\"", city_reference)
 	checkErr(err)
 	defer rows.Close()
 	for rows.Next() {
@@ -32,14 +30,12 @@ func GetRessources(city_reference int) ([]Ressource, error) {
 	return RessourcesList, nil
 }
 
-func SaveCity(cityId int,nodes map[string]string)(err error){
-	db, err := sql.Open("sqlite3", "./MyCity.db")
+func SaveCity(cityId int, nodes map[string]string) (err error) {
 	checkErr(err)
-
 	for i, t := range nodes {
-	// query
-	_ ,err := db.Exec("INSERT INTO ressourceNodes (indexBoard, ressourceType, ref_city_id) VALUES ($index,$type,$cityId)", i,t,cityId)
-	checkErr(err)
+		// query
+		_, err := database.DBCon.Exec("INSERT INTO \"ressourceNodes\" (\"indexBoard\", \"ressourceType\", \"ref_city_id\") VALUES ($1,$2,$3)", i, t, cityId)
+		checkErr(err)
 	}
 	return err
 }

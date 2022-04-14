@@ -2,6 +2,7 @@ package elements
 
 import (
 	"database/sql"
+	"myCity/database"
 )
 
 type City struct {
@@ -14,10 +15,8 @@ type City struct {
 
 func GetCity(name string, owner string) (*City, error) {
 	var city City
-	db, err := sql.Open("sqlite3", "./MyCity.db")
-	checkErr(err)
 	// query
-	err = db.QueryRow("SELECT name,owner, id, progression FROM cities WHERE name = $name AND owner = $owner ", name, owner).Scan(&city.Name, &city.Owner, &city.Id, &city.Progression)
+	err := database.DBCon.QueryRow("SELECT name,owner, id, progression FROM cities WHERE name = $1 AND owner = $2 ", name, owner).Scan(&city.Name, &city.Owner, &city.Id, &city.Progression)
 	if err == sql.ErrNoRows {
 		return &City{}, nil
 	} else {

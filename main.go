@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"myCity/elements"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -12,11 +13,12 @@ import (
 )
 
 func main() {
+	port := os.Getenv("PORT")
 	http.HandleFunc("/annuaire", recherchePage)
 	http.HandleFunc("/recherche/ville", montreVille)
 	http.HandleFunc("/savemap/", saveMap)
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("views/assets"))))
-	err := http.ListenAndServe(":9090", nil)
+	err := http.ListenAndServe(":"+port, nil)
 	checkErr(err)
 }
 
